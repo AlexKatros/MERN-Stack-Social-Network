@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator/check');
 
 const User = require('../../models/User');
 
@@ -22,7 +22,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route    POST api/auth
-// @desc     Authenticate user and get token
+// @desc     Authenticate user & get token
 // @access   Public
 router.post(
 	'/',
@@ -41,7 +41,6 @@ router.post(
 		try {
 			let user = await User.findOne({ email });
 
-			// See if user exists
 			if (!user) {
 				return res
 					.status(400)
@@ -71,7 +70,6 @@ router.post(
 					res.json({ token });
 				}
 			);
-			// return jsonwebtoken
 		} catch (err) {
 			console.error(err.message);
 			res.status(500).send('Server error');
